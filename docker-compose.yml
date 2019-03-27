@@ -1,0 +1,61 @@
+version: '2'
+services:
+  gcr.io-registry:
+    image: registry:2
+    container_name: gcr.io-registry
+    restart: always
+    volumes:
+      - ./cache/gcr.io:/var/lib/registry
+      - ./registry/gcr.io.yml:/etc/docker/registry/config.yml
+    environment:
+      HTTPS_PROXY:
+    networks:
+      - registry
+
+  k8s.gcr.io-registry:
+    image: registry:2
+    container_name: k8s.gcr.io-registry
+    restart: always
+    volumes:
+      - ./cache/k8s.gcr.io:/var/lib/registry
+      - ./registry/k8s.gcr.io.yml:/etc/docker/registry/config.yml
+    environment:
+      HTTPS_PROXY:
+    networks:
+      - registry
+
+  quay.io-registry:
+    image: registry:2
+    container_name: quay.io-registry
+    restart: always
+    volumes:
+      - ./cache/quay.io:/var/lib/registry
+      - ./registry/quay.io.yml:/etc/docker/registry/config.yml
+    #environment:
+    #  HTTPS_PROXY:
+    networks:
+      - registry
+    
+  web:
+    image: nginx:1.14.2-alpine
+    container_name: nginx-registry
+    restart: always
+    volumes: 
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
+    networks:
+      - registry
+    depends_on:
+      - gcr.io-registry
+      - k8s.gcr.io-registry
+      - quay.io-registry
+    links:
+      - gcr.io-registry
+      - k8s.gcr.io-registry
+      - quay.io-registry
+
+networks:
+  registry:
+    external: false
+    
