@@ -31,8 +31,8 @@ services:
     volumes:
       - ./cache/quay.io:/var/lib/registry
       - ./registry/quay.io.yml:/etc/docker/registry/config.yml
-    #environment:
-    #  HTTPS_PROXY:
+    environment:
+      HTTPS_PROXY:
     networks:
       - registry
     

@@ -17,8 +17,8 @@ health:
     interval: 10s
     threshold: 3
 proxy:
-  #remoteurl: https://quay.io
-  remoteurl: https://quay.mirrors.ustc.edu.cn
+  remoteurl: https://quay.io
+  #remoteurl: https://quay.mirrors.ustc.edu.cn
 compatibility:
   schema1:
     enabled: true
